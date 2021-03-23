@@ -1,0 +1,125 @@
+#include<bits/stdc++.h>
+#include<sstream>
+#define ll long long
+#define endl '\n'
+
+using namespace std;
+ll fact[1000006];
+ll modInverse[1000006];
+ll mod = 1e9 + 7;
+
+ll sieve[100001];
+ll N = 100001;
+
+/*int power(int base, int x) {
+    int ans = 1;
+    while(x) {
+        if(x % 2 == 0) {
+            base = base * base;
+            x = x / 2;
+        }
+        else {
+            ans = ans * base;
+            x = x - 1;
+        }
+    }
+    return ans;
+}*/
+
+ll modPower(ll base, ll x, ll mod) {
+    ll ans = 1;
+    while(x) {
+        if(x % 2 == 0) {
+            base = (base * base)%mod;
+            x = x / 2;
+        }
+        else {
+            ans = (ans * base)%mod;
+            x = x - 1;
+        }
+    }
+    return ans;
+}
+
+void combination() {
+
+    fact[0] = 1;
+    // 10^6 * log mod
+    for(ll i = 1;i<=1000000;i++) {
+        fact[i] = (i * fact[i-1])%mod;
+        modInverse[i] = modPower(fact[i], mod-2, mod);
+    }
+}
+
+ll nCr(ll n, ll r){
+    combination();
+    ll ans = (fact[n] * modInverse[r])%mod;
+    ans = (ans * modInverse[n-r])%mod;
+    return ans;
+
+}
+void createSieve(){
+    for(ll i=0;i<N;i++){
+        sieve[i] = 1;
+    }
+    sieve[0] = sieve[1] = 0;
+
+    for(int i = 2;i*i<=N;i++) {
+        if(sieve[i] == 1) {
+            // mark all multiples of i;
+            for(int j = i * i;j<=N;j+=i) {
+                sieve[j] = 0;
+            }
+        }
+    }
+}
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    createSieve();
+
+        ll l,r;
+        l = 1, r = 100000000;
+        vector<ll> primes;
+        for(ll i = 1;i<=r;i++) {
+            if(sieve[i] == 1) {
+                primes.push_back(i);
+            }
+        }
+
+        for(int i=0;i<primes.size();i+=100){
+            cout<<primes[i]<<" ";
+        }
+
+        int hypo[r - l + 1];
+
+        for(int i = 0;i<r-l+1;i++) hypo[i] = 1;
+
+        for(auto pr: primes) {
+            int first = floor(l / pr) * pr;
+            if(first < l) first += pr;
+            if(first == pr) first += pr;
+            //cout<<first<< " ";
+            for(int j = first ; j<= r; j+= pr) {
+                hypo[j-l] = 0;
+            }
+        }
+
+        for(int i=l;i<=r;i++){
+            if(hypo[i-l]==1 && i!=1)
+                cout<<i<< endl;
+        }
+
+
+        /*for(int i = l;i<=r;i++) {
+            if(hypo[i]==1)
+                cout<<i + 1<<endl;
+        }*/
+}
+
+
+
+
+// find the number of primes in the range l and r

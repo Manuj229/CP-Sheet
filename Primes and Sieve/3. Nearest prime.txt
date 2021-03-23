@@ -1,0 +1,96 @@
+#include<bits/stdc++.h>
+#define ll long long
+using namespace std;
+int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+        int n=1000000;
+
+        bool prime[n+1];
+
+        memset(prime,true,n+1);
+
+        prime[1]=false;
+
+        for(ll i=2;i*i<=n;i++)
+
+        {
+
+            if(prime[i])
+
+            {
+
+                for(ll j=i*i;j<=n;j+=i)
+
+                {
+
+                    prime[j]=false;
+
+                }
+
+            }
+
+        }
+
+    ll t,m,a;
+
+    cin>>t;
+
+    while(t--)
+
+    {
+
+        cin>>m;
+
+        if(prime[m])
+
+        {
+
+            cout<<m<<"\n";
+
+            continue;
+
+        }
+
+        ll i=1;
+
+        while(true)
+
+        {
+
+            a=m-i;
+
+
+
+            if(prime[a])
+
+                {
+
+                    cout<<a<<"\n";
+
+                    break;
+
+                }
+
+            ll b=m+i;
+
+
+
+            if(prime[b])
+
+            {
+
+                cout<<b<<"\n";
+
+                break;
+
+            }
+
+            i+=1;
+
+        }
+
+    }
+
+}

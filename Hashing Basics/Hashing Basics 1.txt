@@ -1,0 +1,26 @@
+#include<bits/stdc++.h>
+#include<sstream>
+#define ll long long
+using namespace std;
+
+int main()
+{
+    string str;
+    getline(cin, str);
+    map<int, int>mp;
+    for(int i=0;i<str.length();i++){
+        mp[int(str[i])]++;
+    }
+    int max_count = 0;
+    int res = -1;
+    for(auto x:mp){
+        if(max_count<x.second){
+            res = x.first;
+            max_count = x.second;
+        }
+    }
+
+    cout<<char(res)<<" "<<max_count<< "\n";
+
+
+}
